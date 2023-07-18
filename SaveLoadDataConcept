@@ -1,0 +1,69 @@
+// i put this together real quick using .net fiddle online compiler
+
+using System;
+					
+public class Program
+{
+	
+	public static int[] runtimeVariables = new int[10];
+	public static int[] savedRuntimeVariables = new int[10];
+	public static byte[] savedBytes = new byte[10];
+	public static string savedGameHash;
+	
+	// runs each method
+	public static void Main()
+	{
+		GameStuff(runtimeVariables);
+		
+		Console.WriteLine(savedGameHash);
+	}
+	
+	// as the game loop, these variables are assigned a simple value
+	public static void GameStuff(int[] runtimeVariables)
+	{
+		// playing game
+		for (int i = 0; i < runtimeVariables.Length; i++)
+		{
+			runtimeVariables[i] += 5;
+		}
+		
+		// saving game at the end
+		SaveGame(runtimeVariables);
+		
+	}
+	
+	// game loop variables are divided by 2 and converted to a char to slightly obfuscate them
+	// this may help stop people cheating, but still allows you to put random values into the game
+	// definitely not meant to be robust anti cheating save system in this state, just proof of concept
+	
+	private static string SaveGame(int[] runtimeVariables)
+	{
+	
+		savedGameHash = "START-|";
+		for (int i = 0; i < runtimeVariables.Length; i++)
+		{
+			// copying game data
+			savedRuntimeVariables[i] = runtimeVariables[i];
+			
+			// optional for the proof of concept, just testing
+			// converting copied game data to bytes
+			savedBytes[i] = System.Convert.ToByte(savedRuntimeVariables[i]);
+		}
+		
+		// doing something to each of the values in the copied game data
+		foreach(int savedRuntimeVariable in savedRuntimeVariables)
+		{
+			savedGameHash += System.Convert.ToBase64String(savedBytes);
+		}
+		
+		savedGameHash += "|-END";
+		
+		return savedGameHash;
+	}
+	
+	private static void LoadGAme()
+	{
+		
+		
+		
+	}
